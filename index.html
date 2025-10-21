@@ -1,22 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kaleshi’s Birthday Countdown 🐾</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Message for You</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom font for the handwritten look */
+        .font-pacifico {
+            font-family: 'Pacifico', cursive;
+        }
+
+        /* Styling for the main body */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #FFF0F5, #E6E6FA); /* Soft Lavender to Pink */
+            overflow: hidden;
+        }
+        
+        /* The main container that flips */
+        .flip-card {
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        /* When the .flipped class is added, the card rotates */
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            -webkit-backface-visibility: hidden; /* Safari */
+            backface-visibility: hidden;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Cat animation */
+        .cat {
+            position: absolute;
+            bottom: 0;
+            left: -150px; /* Start off-screen */
+            width: 100px;
+            height: auto;
+            animation: walk-across 15s linear infinite;
+        }
+        
+        .cat2 {
+            animation-delay: 5s; /* Start this cat a bit later */
+            width: 80px;
+            animation-duration: 20s;
+        }
+        
+        .cat3 {
+            animation-delay: 10s;
+             width: 120px;
+            animation-duration: 12s;
+        }
+
+        @keyframes walk-across {
+            0% {
+                left: -150px;
+                transform: scaleX(1);
+            }
+            49% {
+                transform: scaleX(1);
+            }
+            50% {
+                left: 100vw;
+                transform: scaleX(-1); /* Flip the cat */
+            }
+            99% {
+                transform: scaleX(-1);
+            }
+            100% {
+                left: -150px;
+                transform: scaleX(1);
+            }
+        }
+    </style>
 </head>
-<body>
-  <div class="overlay"></div>
+<body class="flex items-center justify-center h-screen">
 
-  <div class="countdown-card">
-    <h1>Countdown to Kaleshi's Birthday</h1>
-    <div id="countdown"></div>
-    <p>Made with love by your Laadu</p>
-  </div>
+    <!-- The container for the entire flip card experience -->
+    <div id="app-container" class="w-full max-w-lg mx-auto">
+        
+        <div id="birthday-card" class="flip-card w-full h-auto">
+            <div class="flip-card-inner relative w-full rounded-2xl shadow-2xl">
+                
+                <!-- Front of the card: The Countdown -->
+                <div id="countdown-view" class="flip-card-front absolute w-full bg-white/70 backdrop-blur-xl p-8 rounded-2xl text-center">
+                    <h1 class="text-4xl font-bold text-gray-800 font-pacifico text-pink-500">Something Special is Coming</h1>
+                    <p class="text-gray-600 mt-2">Just for you...</p>
+                    
+                    <div id="countdown" class="text-5xl font-bold my-8 text-indigo-600">
+                        <!-- Countdown timer will be injected here -->
+                    </div>
+                    
+                    <p class="text-gray-500 text-sm">P.S. I know you're angry, and I'm really sorry. I hope this makes you smile.</p>
+                </div>
 
-  <canvas id="catCanvas"></canvas>
+                <!-- Back of the card: The Birthday Message -->
+                <div id="birthday-view" class="flip-card-back absolute w-full bg-white/70 backdrop-blur-xl p-8 rounded-2xl text-center">
+                    <h1 class="text-5xl font-bold text-pink-500 font-pacifico">Happy Birthday!</h1>
+                    <img src="https://placehold.co/400x250/EADDFF/6D28D9?text=Your+Favorite+Photo" 
+                         alt="A special moment" 
+                         class="my-6 rounded-xl shadow-lg mx-auto"
+                         onerror="this.src='https://placehold.co/400x250/EADDFF/6D28D9?text=Imagine+Us+Here!'"
+                    >
+                    <p class="text-lg text-gray-700">
+                        To the person who makes my world brighter. I know I messed up, but my love for you has never changed. You're the best thing that's ever happened to me.
+                    </p>
+                    <button id="reveal-button" class="mt-6 bg-pink-500 text-white font-bold py-2 px-6 rounded-full hover:bg-pink-600 transition-all">
+                        Click for a surprise
+                    </button>
+                </div>
 
-  <script src="script.js"></script>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Animated cats walking at the bottom of the screen -->
+    <div>
+        <img src="https://media.tenor.com/J3_n_t31KHYAAAAi/cat-walking-cat.gif" alt="Walking Cat" class="cat">
+        <img src="https://media.tenor.com/J3_n_t31KHYAAAAi/cat-walking-cat.gif" alt="Walking Cat" class="cat cat2">
+        <img src="https://media.tenor.com/J3_n_t31KHYAAAAi/cat-walking-cat.gif" alt="Walking Cat" class="cat cat3">
+    </div>
+
+    <!-- JavaScript logic -->
+    <script>
+        const countdownElement = document.getElementById('countdown');
+        const birthdayCard = document.getElementById('birthday-card');
+        const revealButton = document.getElementById('reveal-button');
+
+        // The target date for her birthday
+        const birthday = new Date('2025-10-25T00:00:00').getTime();
+
+        const updateCountdown = () => {
+            const now = new Date().getTime();
+            const distance = birthday - now;
+
+            if (distance <= 0) {
+                // If it's her birthday, flip the card and stop the countdown
+                countdownElement.innerHTML = "It's Today!";
+                if (!birthdayCard.classList.contains('flipped')) {
+                    birthdayCard.classList.add('flipped');
+                }
+                clearInterval(interval);
+                return;
+            }
+
+            // Calculate days, hours, minutes, and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result
+            countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        };
+
+        // Update the countdown every second
+        const interval = setInterval(updateCountdown, 1000);
+        
+        // Initial call to display countdown immediately
+        updateCountdown();
+
+        // Surprise button functionality
+        revealButton.addEventListener('click', () => {
+            alert("My surprise is that I'll love you forever, no matter what. I promise to always try my best for you. ❤️");
+        });
+    </script>
+
 </body>
 </html>

@@ -10,7 +10,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 // --- COUNTDOWN LOGIC ---
-const birthday = new Date('2025-10-25T00:00:00').getTime();
+const birthday = new Date('2024-10-25T00:00:00').getTime();
 const updateCountdown = () => {
     const now = new Date().getTime();
     const distance = birthday - now;
@@ -213,3 +213,4 @@ window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 });
+

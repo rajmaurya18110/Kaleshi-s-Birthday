@@ -26,9 +26,10 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 const ctx = canvas.getContext('2d');
 
-// Load cat image
+// ##########  THIS IS THE FIX ##########
+// Load cat image (This is a new, correct URL)
 const catImg = new Image();
-catImg.src = 'https://cdn-icons-png.flaticon.com/512/616/616408.png'; // cute cat PNG
+catImg.src = 'https://cdn-icons-png.flaticon.com/512/126/126484.png'; // cute cat PNG
 
 // Load laddoo image
 const laddooImg = new Image();
@@ -64,8 +65,10 @@ function animate() {
     cat.y += cat.speedY;
 
     // Bounce off walls
-    if (cat.x + cat.size > canvas.width || cat.x < 0) cat.speedX *= -1;
-    if (cat.y + cat.size > canvas.height || cat.y < 0) cat.speedY *= -1;
+    if (cat.x + cat.size > canvas.width || cat.y + cat.size > canvas.height) {
+        cat.speedX *= -1;
+        cat.speedY *= -1;
+    }
   });
 
   // Draw laddoos

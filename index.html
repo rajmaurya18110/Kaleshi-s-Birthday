@@ -1,56 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Message for my Kaleshi</title>
-    <!-- External Stylesheet -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A Special Message for Kaleshi</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts and Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <!-- Sound Effect Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
 </head>
-<body class="flex items-center justify-center h-screen">
+<body>
 
-    <!-- Canvas for the free-roaming cats and laddoos animation -->
-    <canvas id="animation-canvas"></canvas>
+    <div id="animation-container"></div>
+    <div id="shower-container"></div>
 
-    <!-- The container for the entire flip card experience -->
-    <div id="app-container" class="w-full max-w-lg mx-auto">
-        <div id="birthday-card" class="flip-card w-full h-auto">
-            <div class="flip-card-inner relative w-full rounded-2xl shadow-2xl">
-                
-                <!-- Front of the card: The Countdown -->
-                <div id="countdown-view" class="flip-card-front absolute w-full bg-white/70 backdrop-blur-xl p-8 rounded-2xl text-center">
-                    <h1 class="text-4xl font-bold text-gray-800 font-pacifico text-pink-500">Something Special is Coming, Kaleshi</h1>
-                    <p class="text-gray-600 mt-2">Just for you, from your Laadu...</p>
-                    <div id="countdown" class="text-5xl font-bold my-8 text-indigo-600">
-                        <!-- Countdown timer will be injected here -->
+    <div class="card-container">
+        <div id="birthday-card">
+            <!-- Front of the Card: The Countdown -->
+            <div class="card-face card-front">
+                <h1>For my Kaleshi</h1>
+                <h2>A message is waiting...</h2>
+                <div id="countdown">Loading...</div>
+                <p class="signature">- Your Laadu</p>
+                <p class="instruction">Tap the card when the time comes!</p>
+            </div>
+
+            <!-- Back of the Card: The Slideshow -->
+            <div class="card-face card-back">
+                <!-- Slide 1: Main Birthday Message -->
+                <div class="back-content active">
+                    <div class="photo-container">
+                        <img src="https://placehold.co/200x200/FFC0CB/d6336c?text=Our+Photo" alt="A special photo of us">
                     </div>
-                    <p class="text-gray-500 text-sm">P.S. I know you're angry, and I'm really sorry. I hope this makes you smile.</p>
+                    <h1>Happy Birthday, Payal!</h1>
+                    <p>To my favorite fighter. I hope this brings a smile to your face. Tap to see a few memories...</p>
+                    <p class="signature">With all my love, Raj</p>
                 </div>
 
-                <!-- Back of the card: The Birthday Message -->
-                <div id="birthday-view" class="flip-card-back absolute w-full bg-white/70 backdrop-blur-xl p-8 rounded-2xl text-center">
-                    <h1 class="text-5xl font-bold text-pink-500 font-pacifico">Happy Birthday, my Kaleshi!</h1>
-                    <img src="https://placehold.co/400x250/EADDFF/6D28D9?text=Your+Favorite+Photo" 
-                         alt="A special moment" 
-                         class="my-6 rounded-xl shadow-lg mx-auto"
-                         onerror="this.src='https://placehold.co/400x250/EADDFF/6D28D9?text=Imagine+Us+Here!'"
-                    >
-                    <p class="text-lg text-gray-700">
-                        To Payal, the person who makes my world brighter. I know I messed up, but my love for you has never changed. You're the best thing that's ever happened to me.
-                    </p>
-                    <button id="reveal-button" class="mt-6 bg-pink-500 text-white font-bold py-2 px-6 rounded-full hover:bg-pink-600 transition-all">
-                        Click for a surprise
-                    </button>
+                <!-- Slide 2: First Memory -->
+                <div class="back-content">
+                    <div class="photo-container">
+                        <img src="https://placehold.co/200x200/f8ad9d/a61e4d?text=Memory+1" alt="Another photo of us">
+                    </div>
+                    <p>Remember this day? It feels like yesterday. I knew right then how special you were.</p>
+                </div>
+
+                <!-- Slide 3: Second Memory -->
+                <div class="back-content">
+                    <div class="photo-container">
+                         <img src="https://placehold.co/200x200/fce181/a61e4d?text=Memory+2" alt="A third photo of us">
+                    </div>
+                    <p>Even when you're angry, you're cute. I'm sorry for being a Laadu sometimes, but I'm your Laadu.</p>
+                </div>
+
+                 <!-- Slide 4: Final Message -->
+                 <div class="back-content">
+                    <div class="photo-container">
+                        <img src="https://placehold.co/200x200/c5e1a5/a61e4d?text=Forever" alt="A fourth photo of us">
+                    </div>
+                    <p>You're my forever, Kaleshi. I'll never stop trying to make you happy. Happy Birthday. ❤️</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- External JavaScript File -->
     <script src="script.js"></script>
+
 </body>
 </html>
 

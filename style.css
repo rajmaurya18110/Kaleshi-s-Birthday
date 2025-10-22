@@ -1,48 +1,268 @@
-/* Custom font for the handwritten look */
-.font-pacifico {
-    font-family: 'Pacifico', cursive;
+/* --- GENERAL STYLES --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Pacifico&display=swap');
+
+:root {
+    --cat-color-1: #5a5a5a; /* Grey */
+    --cat-color-2: #c58a55; /* Ginger */
+    --cat-color-3: #2c2c2c; /* Black */
+    --cat-color-4: #e0e0e0; /* White/Light Grey */
+    --cat-color-5: #6d5e56; /* Brown */
+    --cat-color-6: #d4a787; /* Cream */
+
+    --inner-ear-color: #F4C2C2;
+    --tummy-color: #f5f5f5;
 }
 
-/* Styling for the main body */
-body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #FFF0F5, #E6E6FA); /* Soft Lavender to Pink */
-    overflow: hidden;
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* The main container that flips */
-.flip-card {
-    perspective: 1000px;
-    z-index: 10; /* Ensure card is on top of the canvas */
+body {
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-family: 'Poppins', sans-serif;
 }
 
-.flip-card-inner {
-    transition: transform 0.8s;
-    transform-style: preserve-3d;
-}
-
-/* When the .flipped class is added, the card rotates */
-.flip-card.flipped .flip-card-inner {
-    transform: rotateY(180deg);
-}
-
-.flip-card-front, .flip-card-back {
-    -webkit-backface-visibility: hidden; /* Safari */
-    backface-visibility: hidden;
-}
-
-.flip-card-back {
-    transform: rotateY(180deg);
-}
-
-/* Canvas for our new cat animation */
-#animation-canvas {
+#animation-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1; /* Behind the card */
-    /* The main div is now the click target */
+    z-index: 10;
+    pointer-events: auto;
 }
+
+/* --- CARD STYLES --- */
+.card-container {
+    perspective: 1500px;
+    z-index: 5;
+}
+
+#birthday-card {
+    width: 90vw;
+    max-width: 450px;
+    height: 70vh;
+    max-height: 450px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    cursor: pointer;
+}
+
+#birthday-card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 20px;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+}
+
+#birthday-card.shake {
+    animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+}
+@keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
+
+/* --- SLIDESHOW STYLES --- */
+.back-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transform: scale(1.05);
+    transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+    pointer-events: none;
+}
+
+.back-content.active {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.back-content.exiting {
+    opacity: 0;
+    transform: scale(0.95);
+}
+
+
+/* --- CONTENT STYLING --- */
+h1 { font-family: 'Pacifico', cursive; font-size: clamp(2rem, 5vw, 2.8rem); color: #d6336c; margin-bottom: 10px; line-height: 1.2; }
+h2 { font-size: clamp(1rem, 4vw, 1.2rem); color: #555; margin-bottom: 20px; }
+p { font-size: clamp(0.9rem, 2.5vw, 1.1rem); color: #333; line-height: 1.6; margin: 10px 0; }
+.signature { font-family: 'Pacifico', cursive; font-size: clamp(1.1rem, 3vw, 1.4rem); color: #c2255c; margin-top: auto; }
+#countdown { font-size: clamp(1.8rem, 8vw, 3rem); color: #a61e4d; font-weight: 700; margin: 15px 0; letter-spacing: 2px; }
+.instruction { font-size: 0.8rem; color: #888; margin-top: 15px; font-style: italic; }
+
+.photo-container {
+    width: clamp(120px, 30vw, 180px);
+    height: clamp(120px, 30vw, 180px);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+}
+
+.photo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* --- PARTICLE SHOWER STYLES --- */
+#shower-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2000;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    font-size: 2rem;
+    will-change: transform, opacity;
+}
+
+
+/* --- SUPER CUTE CSS CAT --- */
+.cat {
+    position: absolute;
+    width: 220px;
+    height: 200px;
+    transition: transform 0.2s linear, left 0.2s linear, top 0.2s linear;
+    pointer-events: none;
+}
+.cat-body, .cat-head, .tail, .leg, .ear {
+    background: var(--cat-color-1);
+}
+.cat:nth-child(1) .cat-body, .cat:nth-child(1) .cat-head, .cat:nth-child(1) .tail, .cat:nth-child(1) .leg, .cat:nth-child(1) .ear { background: var(--cat-color-1); }
+.cat:nth-child(2) .cat-body, .cat:nth-child(2) .cat-head, .cat:nth-child(2) .tail, .cat:nth-child(2) .leg, .cat:nth-child(2) .ear { background: var(--cat-color-2); }
+.cat:nth-child(3) .cat-body, .cat:nth-child(3) .cat-head, .cat:nth-child(3) .tail, .cat:nth-child(3) .leg, .cat:nth-child(3) .ear { background: var(--cat-color-3); }
+.cat:nth-child(4) .cat-body, .cat:nth-child(4) .cat-head, .cat:nth-child(4) .tail, .cat:nth-child(4) .leg, .cat:nth-child(4) .ear { background: var(--cat-color-4); }
+.cat:nth-child(5) .cat-body, .cat:nth-child(5) .cat-head, .cat:nth-child(5) .tail, .cat:nth-child(5) .leg, .cat:nth-child(5) .ear { background: var(--cat-color-5); }
+.cat:nth-child(6) .cat-body, .cat:nth-child(6) .cat-head, .cat:nth-child(6) .tail, .cat:nth-child(6) .leg, .cat:nth-child(6) .ear { background: var(--cat-color-6); }
+.cat:nth-child(4) .eye::after { background: #333; }
+
+.cat-body {
+    position: absolute; bottom: 0; left: 24px;
+    width: 160px; height: 84px; border-radius: 50px;
+}
+.cat-body::before {
+    content: ''; position: absolute; bottom: 0; left: 30px;
+    width: 100px; height: 50px; background: var(--tummy-color); border-radius: 24px;
+}
+.cat-head {
+    position: absolute; right: 0; bottom: 40px;
+    width: 110px; height: 110px; border-radius: 50%;
+}
+.ear {
+    position: absolute; top: -20px; width: 0; height: 0;
+    border-left: 24px solid transparent; border-right: 24px solid transparent;
+    border-bottom: 44px solid;
+}
+.ear-left { left: 0px; transform: rotate(-25deg); }
+.ear-right { right: 0px; transform: rotate(25deg); }
+.ear::after {
+    content: ''; position: absolute; top: 16px; left: -16px;
+    border-left: 16px solid transparent; border-right: 16px solid transparent;
+    border-bottom: 24px solid var(--inner-ear-color);
+}
+.eye {
+    position: absolute; top: 44px; width: 20px; height: 20px;
+    background: white; border-radius: 50%;
+    animation: blink 4s infinite steps(1, end);
+}
+.eye::after {
+    content: ''; position: absolute; top: 5px; left: 5px;
+    width: 10px; height: 10px; background: black; border-radius: 50%;
+}
+.eye-left { left: 24px; }
+.eye-right { right: 24px; }
+@keyframes blink { 0%, 90%, 100% { height: 20px; } 95% { height: 2px; top: 54px; } }
+.mouth {
+    position: absolute; top: 75px; left: 50%;
+    transform: translateX(-50%);
+    width: 20px; height: 10px;
+    background: var(--inner-ear-color);
+    border-radius: 0 0 10px 10px;
+    border: 2px solid #a61e4d;
+    border-top: 0;
+}
+.tail {
+    position: absolute; bottom: 50px; left: -4px;
+    width: 24px; height: 120px; border-radius: 12px;
+    transform-origin: bottom center; animation: tail-wag 2.5s infinite ease-in-out;
+}
+@keyframes tail-wag { 0%, 100% { transform: rotate(20deg); } 50% { transform: rotate(-15deg); } }
+.leg {
+    position: absolute; bottom: -12px; width: 30px; height: 50px;
+    border-radius: 16px;
+}
+.leg-front-left { left: 136px; }
+.leg-front-right { left: 100px; }
+.leg-back-left { left: 50px; }
+.leg-back-right { left: 16px; }
+.cat.walking .leg-front-left, .cat.walking .leg-back-right { animation: walk1 0.5s infinite ease-in-out; }
+.cat.walking .leg-front-right, .cat.walking .leg-back-left { animation: walk2 0.5s infinite ease-in-out; }
+@keyframes walk1 { 0%, 100% { transform: translateY(0px) rotate(25deg); } 50% { transform: translateY(-8px) rotate(-20deg); } }
+@keyframes walk2 { 0%, 100% { transform: translateY(0px) rotate(-20deg); } 50% { transform: translateY(-8px) rotate(25deg); } }
+
+/* --- LADDOO STYLE --- */
+.laddoo {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    background: radial-gradient(circle at 30% 30%, #ffc107, #ff9800);
+    border-radius: 50%;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3), inset 4px -4px 10px rgba(0,0,0,0.2);
+    transform: translate(-50%, -50%);
+    /* FIX: Removed transition on left/top to allow smooth JS dragging */
+    transition: transform 0.2s, opacity 0.2s;
+    cursor: grab;
+    z-index: 100; /* Ensure laddoo is on top of cats */
+}
+
+.laddoo.dragging {
+    cursor: grabbing;
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+}
+

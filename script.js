@@ -5,13 +5,34 @@ const animationContainer = document.getElementById('animation-container');
 const showerContainer = document.getElementById('shower-container');
 const backContentSlides = document.querySelectorAll('.back-content');
 
-// --- STATE ---
+// --- STATE & RESPONSIVE SIZES ---
 let countdownFinished = false;
 let currentSlideIndex = 0;
 let isTransitioning = false;
 let hasInteracted = false;
 let draggedLaddoo = null;
 let longPressTimer;
+let catDimensions = { width: 220, height: 200 };
+let laddooRadius = 45;
+
+// Function to calculate responsive sizes in pixels
+function updateSizes() {
+    const catElement = cats.length > 0 ? cats[0].element : document.querySelector('.cat');
+    if (catElement) {
+        catDimensions.width = catElement.offsetWidth;
+        catDimensions.height = catElement.offsetHeight;
+    }
+    
+    const laddooElement = laddoos.length > 0 ? laddoos[0].element : document.querySelector('.laddoo');
+    if (laddooElement) {
+        laddooRadius = laddooElement.offsetWidth / 2;
+    } else {
+        // Fallback calculation if no laddoo exists yet
+        const vmin = Math.min(window.innerWidth, window.innerHeight) / 100;
+        laddooRadius = Math.max(45, 8 * vmin) / 2;
+    }
+}
+
 
 // --- IMPROVED SOUND SETUP ---
 const synth = new Tone.PolySynth(Tone.Synth, { oscillator: { type: 'sine' }, envelope: { attack: 0.02, decay: 0.3, sustain: 0.2, release: 2 } }).toDestination();
@@ -122,11 +143,11 @@ class Cat {
         }
         
         if ((this.state === 'chasing' || this.state === 'playing') && this.targetLaddoo) {
-            const dx = this.targetLaddoo.x - (this.x + 110);
-            const dy = this.targetLaddoo.y - (this.y + 100);
+            const dx = this.targetLaddoo.x - (this.x + catDimensions.width / 2);
+            const dy = this.targetLaddoo.y - (this.y + catDimensions.height / 2);
             const dist = Math.hypot(dx, dy);
 
-            if (dist < 100) {
+            if (dist < catDimensions.width / 2) { // Dynamic interaction distance
                 const isPlaytimeOver = (Date.now() - this.targetLaddoo.createdAt) > 60000;
                 if (isPlaytimeOver && this.targetLaddoo.isEatable) {
                     this.state = 'eating';
@@ -166,11 +187,12 @@ class Cat {
         if (isMoving) {
             this.x += this.speedX;
             this.y += this.speedY;
-            const catWidth = 220; const catHeight = 200;
+            
             if (this.x < 0) { this.x = 0; this.speedX *= -1; }
-            if (this.x > window.innerWidth - catWidth) { this.x = window.innerWidth - catWidth; this.speedX *= -1; }
+            if (this.x > window.innerWidth - catDimensions.width) { this.x = window.innerWidth - catDimensions.width; this.speedX *= -1; }
             if (this.y < 0) { this.y = 0; this.speedY *= -1; }
-            if (this.y > window.innerHeight - catHeight) { this.y = window.innerHeight - catHeight; this.speedY *= -1; }
+            if (this.y > window.innerHeight - catDimensions.height) { this.y = window.innerHeight - catDimensions.height; this.speedY *= -1; }
+            
             this.element.classList.add('walking');
         } else {
             this.element.classList.remove('walking');
@@ -200,6 +222,7 @@ class Laddoo {
         this.element = document.createElement('div');
         this.element.className = 'laddoo';
         animationContainer.appendChild(this.element);
+        updateSizes(); // Update sizes now that a laddoo exists
 
         this.element.addEventListener('dblclick', (e) => { e.stopPropagation(); this.startDrag(); });
         this.element.addEventListener('touchstart', (e) => {
@@ -220,11 +243,11 @@ class Laddoo {
             if (!this.isBeingHit) {
                 this.speedX *= this.friction; this.speedY *= this.friction;
                 this.x += this.speedX; this.y += this.speedY;
-                const r = 45;
-                if (this.x < r) { this.x = r; this.speedX *= -0.8; }
-                if (this.x > window.innerWidth - r) { this.x = window.innerWidth - r; this.speedX *= -0.8; }
-                if (this.y < r) { this.y = r; this.speedY *= -0.8; }
-                if (this.y > window.innerHeight - r) { this.y = window.innerHeight - r; this.speedY *= -0.8; }
+                
+                if (this.x < laddooRadius) { this.x = laddooRadius; this.speedX *= -0.8; }
+                if (this.x > window.innerWidth - laddooRadius) { this.x = window.innerWidth - laddooRadius; this.speedX *= -0.8; }
+                if (this.y < laddooRadius) { this.y = laddooRadius; this.speedY *= -0.8; }
+                if (this.y > window.innerHeight - laddooRadius) { this.y = window.innerHeight - laddooRadius; this.speedY *= -0.8; }
             }
         }
         this.element.style.left = `${this.x}px`;
@@ -267,6 +290,7 @@ class Laddoo {
 for (let i = 0; i < numCats; i++) {
     cats.push(new Cat(i));
 }
+updateSizes(); // Initial size calculation
 
 function animate() {
     cats.forEach(cat => cat.update());
@@ -275,8 +299,7 @@ function animate() {
 }
 animate();
 
-// --- EVENT LISTENERS (REWRITTEN TO FIX INTERACTION CONFLICT) ---
-
+// --- EVENT LISTENERS ---
 function handleInteraction(e) {
     if (!hasInteracted) { Tone.start(); hasInteracted = true; }
     
@@ -287,15 +310,10 @@ function handleInteraction(e) {
     const cardRect = birthdayCard.getBoundingClientRect();
     const isOverLaddoo = e.target.classList.contains('laddoo');
 
-    // Check if the tap is within the card's boundaries
     if (x > cardRect.left && x < cardRect.right && y > cardRect.top && y < cardRect.bottom) {
+        // Card interaction logic...
         if (isTransitioning) return;
-    
-        if (!countdownFinished) {
-            birthdayCard.classList.add('shake');
-            setTimeout(() => birthdayCard.classList.remove('shake'), 500);
-            return;
-        }
+        if (!countdownFinished) { birthdayCard.classList.add('shake'); setTimeout(() => birthdayCard.classList.remove('shake'), 500); return; }
         if (!birthdayCard.classList.contains('flipped')) {
             birthdayCard.classList.add('flipped');
             createShower(showerEmojis[0], x, y, 0);
@@ -303,8 +321,7 @@ function handleInteraction(e) {
             isTransitioning = true;
             const nextSlideIndex = (currentSlideIndex + 1) % backContentSlides.length;
             createShower(showerEmojis[nextSlideIndex], x, y, nextSlideIndex);
-            const currentSlide = backContentSlides[currentSlideIndex];
-            currentSlide.classList.add('exiting');
+            backContentSlides[currentSlideIndex].classList.add('exiting');
             setTimeout(() => {
                 currentSlideIndex = nextSlideIndex;
                 backContentSlides.forEach((slide, i) => {
@@ -315,23 +332,18 @@ function handleInteraction(e) {
             }, 1500);
         }
     } 
-    // If not on the card and not on a laddoo, spawn a new one
     else if (!isOverLaddoo) {
-        const newLaddoo = new Laddoo(x, y);
-        laddoos.push(newLaddoo);
+        laddoos.push(new Laddoo(x, y));
     }
 }
 
-// Use a single set of listeners on the window
 window.addEventListener('click', handleInteraction);
 window.addEventListener('touchstart', (e) => {
-    // Prevent default scroll/zoom behavior only for background taps
-    if (!e.target.closest('#birthday-card') && !e.target.classList.contains('laddoo')) {
-        e.preventDefault();
-    }
+    if (!e.target.closest('#birthday-card') && !e.target.classList.contains('laddoo')) e.preventDefault();
     handleInteraction(e);
 }, { passive: false });
 
+window.addEventListener('resize', updateSizes);
 
 // --- DRAG AND DROP LOGIC ---
 function onMouseMove(e) {
@@ -356,5 +368,4 @@ window.addEventListener('mousemove', onMouseMove);
 window.addEventListener('touchmove', onTouchMove, { passive: false });
 window.addEventListener('mouseup', stopDragging);
 window.addEventListener('touchend', stopDragging);
-
 

@@ -118,13 +118,45 @@ body {
 }
 
 
-/* --- CONTENT STYLING --- */
-h1 { font-family: 'Pacifico', cursive; font-size: clamp(2rem, 5vw, 2.8rem); color: #d6336c; margin-bottom: 10px; line-height: 1.2; }
-h2 { font-size: clamp(1rem, 4vw, 1.2rem); color: #555; margin-bottom: 20px; }
-p { font-size: clamp(0.9rem, 2.5vw, 1.1rem); color: #333; line-height: 1.6; margin: 10px 0; }
-.signature { font-family: 'Pacifico', cursive; font-size: clamp(1.1rem, 3vw, 1.4rem); color: #c2255c; margin-top: auto; }
-#countdown { font-size: clamp(1.8rem, 8vw, 3rem); color: #a61e4d; font-weight: 700; margin: 15px 0; letter-spacing: 2px; }
-.instruction { font-size: 0.8rem; color: #888; margin-top: 15px; font-style: italic; }
+/* --- RESPONSIVE CONTENT STYLING (FIX APPLIED HERE) --- */
+h1 { 
+    font-family: 'Pacifico', cursive; 
+    font-size: clamp(2.2rem, 8vw, 3rem); /* Was 2rem, 5vw, 2.8rem */
+    color: #d6336c; 
+    margin-bottom: 10px; 
+    line-height: 1.2; 
+}
+h2 { 
+    font-size: clamp(1.2rem, 5vw, 1.5rem); /* Was 1rem, 4vw, 1.2rem */
+    color: #555; 
+    margin-bottom: 20px; 
+}
+p { 
+    font-size: clamp(1rem, 4vw, 1.2rem); /* Was 0.9rem, 2.5vw, 1.1rem */
+    color: #333; 
+    line-height: 1.6; 
+    margin: 10px 0; 
+}
+.signature { 
+    font-family: 'Pacifico', cursive; 
+    font-size: clamp(1.2rem, 5vw, 1.6rem); /* Was 1.1rem, 3vw, 1.4rem */
+    color: #c2255c; 
+    margin-top: auto; 
+}
+#countdown { 
+    font-size: clamp(2.5rem, 12vw, 4rem); /* Was 1.8rem, 8vw, 3rem */
+    color: #a61e4d; 
+    font-weight: 700; 
+    margin: 15px 0; 
+    letter-spacing: 2px; 
+}
+.instruction { 
+    font-size: clamp(0.8rem, 3vw, 1rem); /* Was 0.8rem */
+    color: #888; 
+    margin-top: 15px; 
+    font-style: italic; 
+}
+
 
 .photo-container {
     width: clamp(120px, 30vw, 180px);
@@ -165,10 +197,10 @@ p { font-size: clamp(0.9rem, 2.5vw, 1.1rem); color: #333; line-height: 1.6; marg
 /* --- RESPONSIVE CSS CAT --- */
 .cat {
     position: absolute;
-    width: 20vmin; /* Responsive size */
-    height: 18vmin; /* Responsive size */
-    min-width: 110px; /* Minimum size */
-    min-height: 100px; /* Minimum size */
+    width: 20vmin;
+    height: 18vmin;
+    min-width: 110px;
+    min-height: 100px;
     transition: transform 0.2s linear, left 0.2s linear, top 0.2s linear;
     pointer-events: none;
 }
@@ -251,8 +283,8 @@ p { font-size: clamp(0.9rem, 2.5vw, 1.1rem); color: #333; line-height: 1.6; marg
 /* --- RESPONSIVE LADDOO STYLE --- */
 .laddoo {
     position: absolute;
-    width: 8vmin; /* Responsive size */
-    height: 8vmin; /* Responsive size */
+    width: 8vmin;
+    height: 8vmin;
     min-width: 45px;
     min-height: 45px;
     background: radial-gradient(circle at 30% 30%, #ffc107, #ff9800);

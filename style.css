@@ -162,11 +162,13 @@ p { font-size: clamp(0.9rem, 2.5vw, 1.1rem); color: #333; line-height: 1.6; marg
 }
 
 
-/* --- SUPER CUTE CSS CAT --- */
+/* --- RESPONSIVE CSS CAT --- */
 .cat {
     position: absolute;
-    width: 220px;
-    height: 200px;
+    width: 20vmin; /* Responsive size */
+    height: 18vmin; /* Responsive size */
+    min-width: 110px; /* Minimum size */
+    min-height: 100px; /* Minimum size */
     transition: transform 0.2s linear, left 0.2s linear, top 0.2s linear;
     pointer-events: none;
 }
@@ -182,87 +184,89 @@ p { font-size: clamp(0.9rem, 2.5vw, 1.1rem); color: #333; line-height: 1.6; marg
 .cat:nth-child(4) .eye::after { background: #333; }
 
 .cat-body {
-    position: absolute; bottom: 0; left: 24px;
-    width: 160px; height: 84px; border-radius: 50px;
+    position: absolute; bottom: 0; left: 11%;
+    width: 72%; height: 42%; border-radius: 50%;
 }
-.cat-body::before {
-    content: ''; position: absolute; bottom: 0; left: 30px;
-    width: 100px; height: 50px; background: var(--tummy-color); border-radius: 24px;
+.cat-body::before { /* Tummy */
+    content: ''; position: absolute; bottom: 0; left: 18%;
+    width: 45%; height: 55%; background: var(--tummy-color); border-radius: 40%;
 }
 .cat-head {
-    position: absolute; right: 0; bottom: 40px;
-    width: 110px; height: 110px; border-radius: 50%;
+    position: absolute; right: 0; bottom: 20%;
+    width: 50%; height: 55%; border-radius: 50%;
 }
 .ear {
-    position: absolute; top: -20px; width: 0; height: 0;
-    border-left: 24px solid transparent; border-right: 24px solid transparent;
-    border-bottom: 44px solid;
+    position: absolute; top: -10%; width: 0; height: 0;
+    border-left: 2.2vmin solid transparent; border-right: 2.2vmin solid transparent;
+    border-bottom: 4vmin solid;
 }
 .ear-left { left: 0px; transform: rotate(-25deg); }
 .ear-right { right: 0px; transform: rotate(25deg); }
-.ear::after {
-    content: ''; position: absolute; top: 16px; left: -16px;
-    border-left: 16px solid transparent; border-right: 16px solid transparent;
-    border-bottom: 24px solid var(--inner-ear-color);
+.ear::after { /* Inner Ear */
+    content: ''; position: absolute; top: 0.8vmin; left: -1.5vmin;
+    border-left: 1.5vmin solid transparent; border-right: 1.5vmin solid transparent;
+    border-bottom: 2.2vmin solid var(--inner-ear-color);
 }
 .eye {
-    position: absolute; top: 44px; width: 20px; height: 20px;
+    position: absolute; top: 40%; width: 9%; height: 11%;
     background: white; border-radius: 50%;
     animation: blink 4s infinite steps(1, end);
 }
-.eye::after {
-    content: ''; position: absolute; top: 5px; left: 5px;
-    width: 10px; height: 10px; background: black; border-radius: 50%;
+.eye::after { /* Pupil */
+    content: ''; position: absolute; top: 25%; left: 25%;
+    width: 50%; height: 50%; background: black; border-radius: 50%;
 }
-.eye-left { left: 24px; }
-.eye-right { right: 24px; }
-@keyframes blink { 0%, 90%, 100% { height: 20px; } 95% { height: 2px; top: 54px; } }
+.eye-left { left: 22%; }
+.eye-right { right: 22%; }
+@keyframes blink { 0%, 90%, 100% { height: 11%; } 95% { height: 1%; top: 48%; } }
 .mouth {
-    position: absolute; top: 75px; left: 50%;
+    position: absolute;
+    top: 68%; left: 50%;
     transform: translateX(-50%);
-    width: 20px; height: 10px;
+    width: 9%; height: 6%;
     background: var(--inner-ear-color);
-    border-radius: 0 0 10px 10px;
-    border: 2px solid #a61e4d;
+    border-radius: 0 0 1vmin 1vmin;
+    border: 0.2vmin solid #a61e4d;
     border-top: 0;
 }
 .tail {
-    position: absolute; bottom: 50px; left: -4px;
-    width: 24px; height: 120px; border-radius: 12px;
+    position: absolute; bottom: 25%; left: -2%;
+    width: 11%; height: 60%; border-radius: 1vmin;
     transform-origin: bottom center; animation: tail-wag 2.5s infinite ease-in-out;
 }
 @keyframes tail-wag { 0%, 100% { transform: rotate(20deg); } 50% { transform: rotate(-15deg); } }
 .leg {
-    position: absolute; bottom: -12px; width: 30px; height: 50px;
-    border-radius: 16px;
+    position: absolute; bottom: -6%; width: 14%; height: 25%;
+    border-radius: 1.5vmin;
 }
-.leg-front-left { left: 136px; }
-.leg-front-right { left: 100px; }
-.leg-back-left { left: 50px; }
-.leg-back-right { left: 16px; }
+.leg-front-left { left: 62%; }
+.leg-front-right { left: 45%; }
+.leg-back-left { left: 23%; }
+.leg-back-right { left: 7%; }
 .cat.walking .leg-front-left, .cat.walking .leg-back-right { animation: walk1 0.5s infinite ease-in-out; }
 .cat.walking .leg-front-right, .cat.walking .leg-back-left { animation: walk2 0.5s infinite ease-in-out; }
-@keyframes walk1 { 0%, 100% { transform: translateY(0px) rotate(25deg); } 50% { transform: translateY(-8px) rotate(-20deg); } }
-@keyframes walk2 { 0%, 100% { transform: translateY(0px) rotate(-20deg); } 50% { transform: translateY(-8px) rotate(25deg); } }
+@keyframes walk1 { 0%, 100% { transform: translateY(0px) rotate(25deg); } 50% { transform: translateY(-0.8vmin) rotate(-20deg); } }
+@keyframes walk2 { 0%, 100% { transform: translateY(0px) rotate(-20deg); } 50% { transform: translateY(-0.8vmin) rotate(25deg); } }
 
-/* --- LADDOO STYLE --- */
+/* --- RESPONSIVE LADDOO STYLE --- */
 .laddoo {
     position: absolute;
-    width: 90px;
-    height: 90px;
+    width: 8vmin; /* Responsive size */
+    height: 8vmin; /* Responsive size */
+    min-width: 45px;
+    min-height: 45px;
     background: radial-gradient(circle at 30% 30%, #ffc107, #ff9800);
     border-radius: 50%;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.3), inset 4px -4px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 0.8vmin 1.6vmin rgba(0,0,0,0.3), inset 0.4vmin -0.4vmin 1vmin rgba(0,0,0,0.2);
     transform: translate(-50%, -50%);
-    /* FIX: Removed transition on left/top to allow smooth JS dragging */
     transition: transform 0.2s, opacity 0.2s;
     cursor: grab;
-    z-index: 100; /* Ensure laddoo is on top of cats */
+    z-index: 100;
 }
 
 .laddoo.dragging {
     cursor: grabbing;
     transform: translate(-50%, -50%) scale(1.1);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 1.5vmin 3vmin rgba(0,0,0,0.4);
 }
 
